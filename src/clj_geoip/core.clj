@@ -59,15 +59,20 @@
   [db-file & cache-options]
   (LookupService. db-file (cache-option cache-options)))
 
+(def files ["resources/GeoLiteCity.dat"
+            "resources/GeoLiteCityv6.dat" 
+            "resources/GeoIPASNum.dat"
+            "resources/GeoIPASNumv6.dat"])
+
 (defn multi-lookup-service
   "Creates a Lookupable from multiple db files.
   The lookup function returns the combination of all individual responses.
   If no db files are specified the following files are used:
   \"resources/GeoLiteCityv6.dat\",\"resources/GeoIPASNumv6.dat\""
   ([]
-     (multi-lookup-service ["resources/GeoLiteCityv6.dat" "resources/GeoIPASNumv6.dat"] nil))
+     (multi-lookup-service files nil))
   ([cache-options]
-     (multi-lookup-service ["resources/GeoLiteCityv6.dat" "resources/GeoIPASNumv6.dat"] cache-options))
+     (multi-lookup-service files cache-options))
   ([db-files cache-options]
      (let [lookup-services (map #(lookup-service % cache-options) db-files)]
        (reify
